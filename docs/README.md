@@ -1,8 +1,14 @@
-# Duke
-
-{Give product intro here}
-
-Useful links:
-* [User Guide](UserGuide.md)
-* [Developer Guide](DeveloperGuide.md)
-* [About Us](AboutUs.md)
+<p align="center">
+<pre>
+ ██████╗  ██╗       █████╗  ██████╗ 
+ ██╔══██╗ ██║      ██╔══██╗ ██╔══██╗
+ ██████╔╝ ██║      ███████║ ██║  ██║
+ ██╔══██╗ ██║      ██╔══██║ ██║  ██║
+ ██║  ██║ ███████╗ ██║  ██║ ██████╔╝
+ ╚═╝  ╚═╝ ╚══════╝ ╚═╝  ╚═╝ ╚═════╝ 
+  Record   Losses   And   Debt
+</pre>
+<br>
+<i>A minimalistic, user-centric financial tracker designed for those <br> 
+who value debt more than their girlfriends.</i>
+</p>
