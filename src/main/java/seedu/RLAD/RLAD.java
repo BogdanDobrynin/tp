@@ -1,15 +1,36 @@
 package seedu.RLAD;
 
-import java.util.Scanner;
-import java.util.ArrayList;
-
 public class RLAD {
+   private final Ui ui;
+   private final TransactionManager transactions;
+
+    public RLAD() {
+        this.ui = new Ui();
+        this.transactions = new TransactionManager();
+    }
+
+    public void run() {
+        ui.printWelcomeGuide();
+        boolean isExit = false;
+
+        while (!isExit) {
+            String fullCommand = ui.readCommand();
+            ui.showLine();
+
+            // temporary logic until parser is completed
+            if (fullCommand.equalsIgnoreCase("exit")) {
+                isExit = true;
+                ui.showExit();
+            } else if (fullCommand.equalsIgnoreCase("list")) {
+                transactions.listAll();
+            } else {
+                ui.showError("I don't know how to '" + fullCommand + "' yet!");
+            }
+            ui.showLine();
+        }
+    }
+
     public static void main(String[] args) {
-        Scanner in = new Scanner(System.in);
-        ArrayList<Double> income = new ArrayList<>();
-        ArrayList<Double> expenses = new ArrayList<>();
-        ArrayList<String> itemType = new ArrayList<>();
-        Logo.printRLAD();
-        addTransaction userTransaction = new addTransaction(income, expenses, itemType, in);
+        new RLAD().run();
     }
 }
