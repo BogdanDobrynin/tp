@@ -85,15 +85,36 @@ public class AddCommand extends Command {
         return argsMap;
     }
 
+    private void validateRequiredFields(Map<String, String> parsedArgs) throws RLADException {
+        // Only validates the necessary fields except category and description
+        String[] requiredFields = {"--type", "--amount", "--date"};
+
+        for (String field : requiredFields) {
+            //Checks if the flag field is empty
+            if (!parsedArgs.containsKey(field) || parsedArgs.get(field).trim().isEmpty()) {
+                //Show error messages
+                throw new RLADException("Missing required field: " + field);
+            }
+        }
+
+        //Optional: Validate that --type is either "debit" or "credit"
+        String type = parsedArgs.get("--type");
+        if (!type.equals("debit") && !type.equals("credit")) {
+            throw new RLADException("Invalid --type. Must be either 'debit' or 'credit'");
+        }
+    }
+
     @Override
     public void execute(TransactionManager transactions, Ui ui) {
         // TODO: Use a tokenizer or regex to extract --type, --amount, --category, --date, and --description.
         Map<String, String> parsedArgs = parseArguments(rawArgs);
         // TODO: Validate that mandatory fields (--type, --amount, --date) are present.
+        validateRequiredFields(parsedArgs);
         // TODO: Convert the amount string to double and date string to LocalDate.
+
         // TODO: Create a new Transaction object and add it via transactions.addTransaction().
         // TODO: Provide success feedback to the user via ui.showResult().
-        ui.showResult("AddCommand logic will be implemented here.");
+        ui.showResult("Validation passed! Required fields are present.");
     }
 
     @Override
