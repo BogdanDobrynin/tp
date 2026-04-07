@@ -55,6 +55,9 @@ public class HelpCommand extends Command {
         case "help":
             ui.printHelpManual();
             break;
+        case "exit":
+            ui.showResult("Command: exit\nDescription: Exits the application.\nExample:\n  exit");
+            break;
         default:
             ui.showResult("Unknown command: " + command
                     + ". Type 'help' to see available commands.");
