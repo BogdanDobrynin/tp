@@ -149,6 +149,13 @@ class HelpCommandTest {
     }
 
     @Test
+    void execute_exitArg_showsExitManual() {
+        HelpCommand cmd = new HelpCommand("exit");
+        cmd.execute(tm, createUi());
+        assertTrue(getOutput().contains("Command: exit"));
+    }
+
+    @Test
     void execute_unknownCommand_showsError() {
         HelpCommand cmd = new HelpCommand("foobar");
         cmd.execute(tm, createUi());
