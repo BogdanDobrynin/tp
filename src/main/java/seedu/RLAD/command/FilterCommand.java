@@ -293,6 +293,10 @@ public class FilterCommand extends Command {
             String key = kv[0];
             String value = kv[1];
 
+            if (key.isEmpty()) {
+                continue;
+            }
+
             switch (key) {
             case "type":
                 result = result.stream()
