@@ -99,6 +99,21 @@ public class ModifyCommand extends Command {
     }
 
     private double parseAmount(String amountStr) throws RLADException {
+        // Reject scientific notation (e.g., 1e5, 2.5E-3)
+        if (amountStr.matches(".*[eE].*")) {
+            throw new RLADException("Invalid amount: '" + amountStr
+                    + "'. Scientific notation is not allowed.");
+        }
+
+        // Reject more than 2 decimal places
+        if (amountStr.contains(".")) {
+            String[] decimalParts = amountStr.split("\\.");
+            if (decimalParts.length == 2 && decimalParts[1].length() > 2) {
+                throw new RLADException("Invalid amount: '" + amountStr
+                        + "'. Maximum 2 decimal places allowed.");
+            }
+        }
+
         try {
             double value = Double.parseDouble(amountStr);
             if (Double.isNaN(value) || Double.isInfinite(value)) {

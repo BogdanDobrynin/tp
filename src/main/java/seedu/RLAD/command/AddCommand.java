@@ -116,6 +116,21 @@ public class AddCommand extends Command {
      * @throws RLADException If amount is not a positive number or exceeds limits
      */
     private double parseAndValidateAmount(String amountStr) throws RLADException {
+        // Reject scientific notation (e.g., 1e5, 2.5E-3)
+        if (amountStr.matches(".*[eE].*")) {
+            throw new RLADException("Invalid amount: '" + amountStr
+                    + "'. Scientific notation is not allowed. Use standard format (e.g., 15.50)");
+        }
+
+        // Reject more than 2 decimal places
+        if (amountStr.contains(".")) {
+            String[] decimalParts = amountStr.split("\\.");
+            if (decimalParts.length == 2 && decimalParts[1].length() > 2) {
+                throw new RLADException("Invalid amount: '" + amountStr
+                        + "'. Maximum 2 decimal places allowed (e.g., 15.50)");
+            }
+        }
+
         double amount;
         try {
             amount = Double.parseDouble(amountStr);
