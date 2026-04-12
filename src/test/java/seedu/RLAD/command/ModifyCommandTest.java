@@ -119,4 +119,12 @@ class ModifyCommandTest {
         Transaction updated = manager.findTransaction(existingId);
         assertEquals(existingId, updated.getHashId());
     }
+
+    @Test
+    void execute_unknownField_throwsException() {
+        RLADException ex = assertThrows(RLADException.class, () ->
+                new ModifyCommand(existingId + " foo=1").execute(manager, ui));
+        assertTrue(ex.getMessage().contains("Unknown field"));
+        assertTrue(ex.getMessage().contains("foo"));
+    }
 }
