@@ -12,6 +12,7 @@ import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+import java.util.Set;
 
 /**
  * Command to modify an existing transaction's fields.
@@ -179,6 +180,15 @@ public class ModifyCommand extends Command {
      * @throws RLADException If any field value is invalid
      */
     private Transaction buildUpdatedTransaction(Transaction existing,Map<String,String> updates) throws RLADException {
+        // Reject unknown field names
+        Set<String> validFields = Set.of("type", "amount", "date", "category", "description");
+        for (String key : updates.keySet()) {
+            if (!validFields.contains(key)) {
+                throw new RLADException("Unknown field: '" + key + "'. "
+                        + "Valid fields: type, amount, date, category, description");
+            }
+        }
+
         String type = updates.getOrDefault("type", existing.getType());
         String category = updates.getOrDefault("category", existing.getCategory());
         String description = updates.getOrDefault("description", existing.getDescription());
