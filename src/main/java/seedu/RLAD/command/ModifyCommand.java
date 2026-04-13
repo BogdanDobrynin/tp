@@ -215,25 +215,7 @@ public class ModifyCommand extends Command {
      * @throws RLADException If amount is invalid, non-positive, or exceeds limits
      */
     private double parseAmount(String amountStr) throws RLADException {
-        try {
-            double value = Double.parseDouble(amountStr);
-            if (Double.isNaN(value) || Double.isInfinite(value)) {
-                throw new RLADException("Invalid amount. Type 'help modify' for usage.");
-            }
-            if (value <= 0) {
-                throw new RLADException("Amount must be > 0. Type 'help modify' for usage.");
-            }
-            if (value > 10_000_000.00) {
-                throw new RLADException("Amount cannot exceed $10,000,000. Type 'help modify' for usage.");
-            }
-            double rounded = Math.round(value * 100.0) / 100.0;
-            if (rounded <= 0) {
-                throw new RLADException("Amount rounds to $0.00. Minimum is $0.01.");
-            }
-            return rounded;
-        } catch (NumberFormatException e) {
-            throw new RLADException("Invalid amount format. Type 'help modify' for usage.");
-        }
+        return AmountValidator.parseAndValidate(amountStr);
     }
 
     /**

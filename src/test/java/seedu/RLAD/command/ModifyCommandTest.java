@@ -135,6 +135,7 @@ class ModifyCommandTest {
     void execute_amountRoundsToZero_throwsException() {
         RLADException ex = assertThrows(RLADException.class, () ->
                 new ModifyCommand("modify", existingId + " amount=0.001").execute(manager, ui));
-        assertTrue(ex.getMessage().contains("$0.00") || ex.getMessage().contains("0.01"));
+        assertTrue(ex.getMessage().contains("decimal") || ex.getMessage().contains("$0.00")
+                || ex.getMessage().contains("0.01"));
     }
 }

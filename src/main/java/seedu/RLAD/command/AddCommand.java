@@ -15,7 +15,7 @@ import java.util.List;
 public class AddCommand extends Command {
 
     private static final DateTimeFormatter DATE_FORMATTER = DateTimeFormatter.ofPattern("yyyy-MM-dd");
-    private static final double MAX_AMOUNT = 10_000_000.00;
+
 
     public AddCommand(String rawArgs) {
         super(rawArgs);
@@ -152,34 +152,7 @@ public class AddCommand extends Command {
     }
 
     private double parseAndValidateAmount(String amountStr) throws RLADException {
-        double amount;
-        try {
-            amount = Double.parseDouble(amountStr);
-        } catch (NumberFormatException e) {
-            throw new RLADException("Invalid amount: '" + amountStr +
-                    "'. Please enter a number (e.g., 15.50)\nType 'help add' for usage.");
-        }
-
-        if (Double.isNaN(amount) || Double.isInfinite(amount)) {
-            throw new RLADException("Invalid amount: '" + amountStr +
-                    "'. Please enter a number.\nType 'help add' for usage.");
-        }
-
-        if (amount <= 0) {
-            throw new RLADException("Amount must be greater than 0. Got: " + amount + "\nType 'help add' for usage.");
-        }
-
-        if (amount > MAX_AMOUNT) {
-            throw new RLADException(String.format("Amount cannot exceed $%,.2f. Got: $%,.2f\nType 'help add' for usage."
-                    , MAX_AMOUNT, amount));
-        }
-
-        // Round to 2 decimal places for consistency
-        double rounded = Math.round(amount * 100.0) / 100.0;
-        if (rounded <= 0) {
-            throw new RLADException("Amount rounds to $0.00. Minimum is $0.01.");
-        }
-        return rounded;
+        return AmountValidator.parseAndValidate(amountStr);
     }
 
     private LocalDate parseAndValidateDate(String dateStr) throws RLADException {
