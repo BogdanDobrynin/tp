@@ -394,4 +394,39 @@ class FilterCommandTest {
         ArrayList<Transaction> results = applyCategoryFilter("--category nonexistent");
         assertEquals(0, results.size());
     }
+
+    @Test
+    public void applyColonFilters_invalidType_throwsException() {
+        ArrayList<Transaction> transactions = createSampleTransactions();
+        assertThrows(RLADException.class,
+                () -> FilterCommand.applyColonFilters(transactions, "type:invalid"));
+    }
+
+    @Test
+    public void applyColonFilters_uppercaseType_filtersCorrectly() throws RLADException {
+        ArrayList<Transaction> transactions = createSampleTransactions();
+        java.util.List<Transaction> results =
+                FilterCommand.applyColonFilters(transactions, "type:CREDIT");
+        assertEquals(2, results.size());
+        for (Transaction t : results) {
+            assertEquals("credit", t.getType());
+        }
+    }
+        
+    public void applyColonFilters_minGreaterThanMax_throwsException() {
+        ArrayList<Transaction> transactions = createSampleTransactions();
+        assertThrows(RLADException.class,
+                () -> FilterCommand.applyColonFilters(transactions, "min:100 max:50"));
+    }
+
+    @Test
+    public void applyColonFilters_validMinMax_filtersCorrectly() throws RLADException {
+        ArrayList<Transaction> transactions = createSampleTransactions();
+        java.util.List<Transaction> results =
+                FilterCommand.applyColonFilters(transactions, "min:10 max:200");
+        for (Transaction t : results) {
+            assertTrue(t.getAmount() >= 10 && t.getAmount() <= 200);
+        }
+        assertEquals(2, results.size());
+    }
 }
