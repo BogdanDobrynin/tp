@@ -28,7 +28,8 @@ public class AddCommand extends Command {
         if (hasUnclosedQuotes(rawArgs)) {
             throw new RLADException("Unclosed quote in command. Missing closing quote (\").\n"
                     + "Use quotes for multi-word descriptions or categories.\n"
-                    + "Example: add debit 15.50 2026-04-12 food \"Lunch at hawker\"");
+                    + "Example: add debit 15.50 2026-04-12 food \"Lunch at hawker\"\n"
+                    + "Type 'help add' for usage.");
         }
 
         List<String> parts = parseWithQuotes(rawArgs.trim());
@@ -48,7 +49,8 @@ public class AddCommand extends Command {
             category = parts.get(3);
             if (category != null && category.trim().matches("-?\\d+(\\.\\d+)?")) {
                 throw new RLADException("Category cannot be purely numerical.\n"
-                        + "Mixed alphanumerics (e.g., '1st Meeting') are acceptable.");
+                        + "Mixed alphanumerics (e.g., '1st Meeting') are acceptable.\n"
+                        + "Type 'help add' for usage.");
             }
         }
         if (parts.size() >= 5) {
@@ -110,7 +112,8 @@ public class AddCommand extends Command {
     private String parseAndValidateType(String typeStr) throws RLADException {
         String type = typeStr.toLowerCase();
         if (!type.equals("credit") && !type.equals("debit")) {
-            throw new RLADException("Invalid type: '" + typeStr + "'. Use 'credit' or 'debit'.");
+            throw new RLADException("Invalid type: '" + typeStr + "'. Use 'credit' or 'debit'.\n"
+                    + "Type 'help add' for usage.");
         }
         return type;
     }
@@ -119,7 +122,8 @@ public class AddCommand extends Command {
         try {
             return LocalDate.parse(dateStr, DATE_FORMATTER);
         } catch (DateTimeParseException e) {
-            throw new RLADException("Invalid date: '" + dateStr + "'. Use YYYY-MM-DD.");
+            throw new RLADException("Invalid date: '" + dateStr + "'. Use YYYY-MM-DD.\n"
+                    + "Type 'help add' for usage.");
         }
     }
 
