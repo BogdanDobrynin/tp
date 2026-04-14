@@ -197,8 +197,10 @@ public class CsvStorageManager {
         }
         // Neutralise formula injection: prefix a tab so spreadsheet apps treat the cell
         // as plain text.  The tab is stripped automatically by .trim() during re-import.
-        if (!field.isEmpty() && "=+-@".indexOf(field.charAt(0)) >= 0) {
-            field = "\t" + field;
+        // Use trimmed first char so a user-supplied leading tab doesn't bypass this check.
+        String trimmed = field.stripLeading();
+        if (!trimmed.isEmpty() && "=+-@".indexOf(trimmed.charAt(0)) >= 0) {
+            field = "\t" + trimmed;
         }
         if (field.contains(",") || field.contains("\"") || field.contains("\n")) {
             return "\"" + field.replace("\"", "\"\"") + "\"";
